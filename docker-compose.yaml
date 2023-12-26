@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  bank-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bank-app
+    ports:
+      - "8081:8081"
+    networks:
+      - My-network
+    depends_on:
+      - mysql 
+  
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_db:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=bank
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - My-network
+
+networks:
+  My-network:
+    driver: bridge
+    # Add any additional configurations for your MySQL service here
+volumes:
+  mysql_db:  
